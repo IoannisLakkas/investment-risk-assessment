@@ -1,0 +1,84 @@
+"""
+Investment Profile Assessment Script
+
+This script asks the user a series of questions to determine their investment risk tolerance.
+Based on the user's responses, it categorizes their risk tolerance and provides investment
+suggestions accordingly, including value stocks, growth stocks, bonds, and a 60/40 portfolio.
+
+Usage:
+    Run the script and answer the questions with a number between 1 and 10.
+    The script will categorize your risk tolerance and suggest appropriate investments.
+"""
+
+def ask_questions():
+    questions = [
+        "On a scale of 1 to 10, how comfortable are you with the potential loss of your investment?",
+        "On a scale of 1 to 10, how important is it for you to preserve your capital?",
+        "On a scale of 1 to 10, how long can you leave your money invested without needing to access it?",
+        "On a scale of 1 to 10, how much do you value potential high returns over stability?",
+        "On a scale of 1 to 10, how much experience do you have with investing in stocks?"
+    ]
+    
+    scores = []
+    for question in questions:
+        while True:
+            try:
+                score = int(input(question + " "))
+                if 1 <= score <= 10:
+                    scores.append(score)
+                    break
+                else:
+                    print("Please enter a number between 1 and 10.")
+            except ValueError:
+                print("Invalid input. Please enter a number between 1 and 10.")
+    
+    return scores
+
+def categorize_risk_tolerance(scores):
+    average_score = sum(scores) / len(scores)
+    
+    if average_score <= 3:
+        return "Low"
+    elif average_score <= 7:
+        return "Moderate"
+    else:
+        return "High"
+
+def suggest_investments(risk_tolerance):
+    suggestions = {
+        "Low": {
+            "Value Stocks": ["Johnson & Johnson (JNJ)", "Procter & Gamble (PG)", "Coca-Cola (KO)"],
+            "Bonds": ["US Treasury Bonds", "Municipal Bonds", "Corporate Bonds"],
+            "60/40 Portfolio": ["60% Vanguard Total Stock Market ETF (VTI)", "40% Vanguard Total Bond Market ETF (BND)"]
+        },
+        "Moderate": {
+            "Value Stocks": ["Apple (AAPL)", "Microsoft (MSFT)", "Visa (V)"],
+            "Growth Stocks": ["Tesla (TSLA)", "Amazon (AMZN)", "NVIDIA (NVDA)"],
+            "60/40 Portfolio": ["60% SPDR S&P 500 ETF (SPY)", "40% iShares Core US Aggregate Bond ETF (AGG)"]
+        },
+        "High": {
+            "Growth Stocks": ["Tesla (TSLA)", "Amazon (AMZN)", "NVIDIA (NVDA)", "Shopify (SHOP)", "Square (SQ)"],
+            "60/40 Portfolio": ["60% Invesco QQQ Trust (QQQ)", "40% iShares 20+ Year Treasury Bond ETF (TLT)"]
+        }
+    }
+    
+    return suggestions[risk_tolerance]
+
+def main():
+    print("Welcome to the Investment Profile Assessment!")
+    
+    scores = ask_questions()
+    risk_tolerance = categorize_risk_tolerance(scores)
+    
+    print(f"\nBased on your answers, your risk tolerance is categorized as: {risk_tolerance}")
+    
+    investment_suggestions = suggest_investments(risk_tolerance)
+    
+    print("\nHere are some investment suggestions for you:")
+    for category, suggestions in investment_suggestions.items():
+        print(f"\n{category}:")
+        for suggestion in suggestions:
+            print(f"- {suggestion}")
+
+if __name__ == "__main__":
+    main()
